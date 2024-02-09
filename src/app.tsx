@@ -1,5 +1,5 @@
 export function App() {
   return (
-    <div>start</div>
+    <div className="text-3xl font-bold underline">start</div>
   )
 }
