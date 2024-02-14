@@ -10,6 +10,7 @@ interface INewNoteCard {
 const NewNoteCard = ({ onNoteCreated }: INewNoteCard) => {
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true)
   const [content, setContent] = useState('')
+  const [isRecording, setIsRecording] = useState(false)
 
   const handleOpenModal = () => {
     setShouldShowOnboarding(true)
@@ -30,11 +31,21 @@ const NewNoteCard = ({ onNoteCreated }: INewNoteCard) => {
   const handleSaveNote = (e: FormEvent) => {
     e.preventDefault()
 
+    if (content === '') return
+
     onNoteCreated(content)
     setContent('')
     setShouldShowOnboarding(true)
 
     toast.success('Nota criada com sucesso!')
+  }
+
+  const handleStartRecording = () => {
+    setIsRecording(true)
+  }
+
+  const handleStopRecording = () => {
+    setIsRecording(false)
   }
 
   return (
@@ -55,7 +66,7 @@ const NewNoteCard = ({ onNoteCreated }: INewNoteCard) => {
           <Dialog.Close className="absolute top-0 right-0 bg-slate-800 p-1.5 text-slate-400 hover:text-slate-100">
             <X className="size-5" />
           </Dialog.Close>
-          <form onSubmit={handleSaveNote} className="flex-1 flex flex-col">
+          <form className="flex-1 flex flex-col">
             <div className="flex flex-1 flex-col gap-3 p-5">
               <span className="text-sm font-medium text-slate-300">
                 Adicionar nota
@@ -63,7 +74,7 @@ const NewNoteCard = ({ onNoteCreated }: INewNoteCard) => {
 
               {shouldShowOnboarding ? (
                 <p className="text-sm leading-6 text-slate-400">
-                  Comece <button className="font-medium text-lime-400 hover:underline">gravando uma nota</button> em áudio ou se preferir <button className="font-medium text-lime-400 hover:underline" onClick={handleStartEditor}>utilize apenas texto</button>.
+                  Comece <button type="button" className="font-medium text-lime-400 hover:underline" onClick={handleStartRecording}>gravando uma nota</button> em áudio ou se preferir <button type="button" className="font-medium text-lime-400 hover:underline" onClick={handleStartEditor}>utilize apenas texto</button>.
                 </p>
               ) : (
                 <textarea
@@ -74,12 +85,26 @@ const NewNoteCard = ({ onNoteCreated }: INewNoteCard) => {
                 />
               )}
             </div>
-            <button
-              type="submit"
-              className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500"
-            >
-              Salvar nota
-            </button>
+
+            {isRecording ? (
+              <button
+                type="button"
+                className="w-full flex items-center justify-center gap-2 bg-slate-900 py-4 text-center text-sm text-slate-300 outline-none font-medium hover:text-100"
+                onClick={handleStopRecording}
+              >
+                <div className="size-3 rounded-full bg-red-500 animate-pulse" />
+                Gravando! (clique para interromper)
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500"
+                onClick={handleSaveNote}
+              >
+                Salvar nota
+              </button>
+            )}
+
           </form>
         </Dialog.Content>
       </Dialog.Portal>
