@@ -40,7 +40,7 @@ export function App() {
     : notes
 
   return (
-    <div className="mx-auto my-12 max-w-6xl space-y-6">
+    <div className="mx-auto my-12 max-w-6xl space-y-6 px-5">
       <form className="w-full">
         <input
           type="text"
@@ -52,7 +52,7 @@ export function App() {
 
       <div className="h-px bg-slate-700" />
 
-      <div className="grid grid-cols-3 auto-rows-[250px] gap-6">
+      <div className="grid grid-cols1 md:grid-cols-2 lg:grid-cols-3 auto-rows-[250px] gap-6">
         <NewNoteCard onNoteCreated={onNoteCreated} />
 
         {filteredNotes?.map(note => (
