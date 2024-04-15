@@ -6,9 +6,10 @@ import { Note } from "../types";
 
 interface INoteCard {
   note: Note;
+  onNoteDeleted: (id: string) => void;
 }
 
-const NoteCard = ({ note }: INoteCard) => {
+const NoteCard = ({ note, onNoteDeleted }: INoteCard) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger className="relative flex flex-col outline-none text-left rounded-md bg-slate-800 p-5 gap-3 overflow-hidden hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
@@ -44,6 +45,7 @@ const NoteCard = ({ note }: INoteCard) => {
           <button
             type="button"
             className="w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium group"
+            onClick={() => onNoteDeleted(note.id)}
           >
             Deseja <span className="text-red-400 group-hover:underline">apagar essa nota</span>?
           </button>
